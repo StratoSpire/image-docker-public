@@ -1,5 +1,5 @@
 ARG UBUNTU_RELEASE_NAME=focal
-FROM docker.io/stratospire/buildpack-deps:curl-${UBUNTU_RELEASE_NAME}
+FROM docker.io/stratospire/buildpack-deps:scm-${UBUNTU_RELEASE_NAME}
 
 ARG K8S_VERSION="1.21.1"
 ENV K8S_VERSION=${K8S_VERSION}
