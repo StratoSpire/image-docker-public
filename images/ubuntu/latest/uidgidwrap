@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#CMD="$@:-/bin/bash"
+PUID=${PUID:-911}
+PGID=${PGID:-911}
+
+groupmod -o -g "$PGID" abc > /dev/null 2>&1
+usermod -o -u "$PUID" abc > /dev/null 2>&1
+
+eval s6-setuidgid abc "$@"
