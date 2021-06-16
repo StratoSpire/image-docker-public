@@ -9,8 +9,9 @@ ENV WAL_G_VERSION=${WAL_G_VERSION} \
     WAL_G_DATABASE=${WAL_G_DATABASE} \
     UBUNTU_RELEASE_NUM=${UBUNTU_RELEASE_NUM}
 
-RUN curl \
-        -L https://github.com/wal-g/wal-g/releases/download/v${WAL_G_VERSION}/wal-g-${WAL_G_DATABASE}-ubuntu-${UBUNTU_RELEASE_NUM}-amd64 \
+RUN export ARCH="$( dpkg --print-architecture )" && \
+    curl \
+        -L https://github.com/wal-g/wal-g/releases/download/v${WAL_G_VERSION}/wal-g-${WAL_G_DATABASE}-ubuntu-${UBUNTU_RELEASE_NUM}-${ARCH} \
         -o /usr/local/bin/wal-g \
     && \
     chmod +x /usr/local/bin/wal-g && \
