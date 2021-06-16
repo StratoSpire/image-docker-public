@@ -1,5 +1,5 @@
 ARG UBUNTU_RELEASE_NAME=focal
-FROM docker.io/stratospire/buildpack-deps:${UBUNTU_RELEASE_NAME}-scm
+FROM docker.io/stratospire/buildpack-deps:scm-${UBUNTU_RELEASE_NAME}
 
 RUN set -ex; \
 	apt-get update; \

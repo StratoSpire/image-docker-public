@@ -1,5 +1,5 @@
 ARG UBUNTU_RELEASE_NAME=focal
-FROM docker.io/stratospire/buildpack-deps:${UBUNTU_RELEASE_NAME}-curl
+FROM docker.io/stratospire/buildpack-deps:curl-${UBUNTU_RELEASE_NAME}
 
 # procps is very common in build systems, and is a reasonably small package
 RUN apt-get update && apt-get install -y --no-install-recommends \
