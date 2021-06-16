@@ -1,15 +1,5 @@
-ARG UBUNTU_RELEASE_NAME="focal"
-FROM docker.io/stratospire/ubuntu:${UBUNTU_RELEASE_NAME}
-
-RUN apt-get update && \
-    apt-get install -y \
-        ca-certificates \
-        curl \
-    && \
-    rm -rf \
-        /var/lib/apt/lists/* \
-    	/tmp/* \
-	    /var/tmp/*
+ARG UBUNTU_RELEASE_NAME=focal
+FROM docker.io/stratospire/buildpack-deps:curl-${UBUNTU_RELEASE_NAME}
 
 ARG WAL_G_VERSION="1.0" \
     WAL_G_DATABASE="pg" \

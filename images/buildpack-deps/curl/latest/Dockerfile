@@ -1,5 +1,5 @@
 ARG UBUNTU_RELEASE_NAME=focal
-FROM docker.io/lsiobase/ubuntu:${UBUNTU_RELEASE_NAME}
+FROM docker.io/stratospire/ubuntu:${UBUNTU_RELEASE_NAME}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \

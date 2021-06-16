@@ -1,0 +1,37 @@
+ARG UBUNTU_RELEASE="20.04"
+FROM docker.io/ubuntu:${UBUNTU_RELEASE}
+
+ENV DEBIAN_FRONTEND="noninteractive" \
+    LANGUAGE="en_US.UTF-8" \
+    LANG="en_US.UTF-8" \
+    TERM="xterm"
+
+RUN apt update && \
+    apt install -y \
+	    apt-utils \
+        bash \
+        ca-certificates \
+        curl \
+	    locales \
+        tzdata \
+    && \
+    rm -rf \
+	    /tmp/* \
+	    /var/lib/apt/lists/* \
+	    /var/tmp/*
+
+RUN useradd -u 911 -U -d /config -s /bin/false abc && \
+    usermod -G users abc && \
+    mkdir -p /app && \
+    chown -R abc:abc /app
+
+WORKDIR /app
+ENV HOME="/app"
+ARG OVERLAY_VERSION="v2.2.0.3"
+ARG OVERLAY_ARCH="amd64"
+
+RUN curl -L https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_VERSION}/s6-overlay-${OVERLAY_ARCH}-installer -o /tmp/s6-overlay-${OVERLAY_ARCH}-installer && \
+    chmod +x /tmp/s6-overlay-${OVERLAY_ARCH}-installer && /tmp/s6-overlay-${OVERLAY_ARCH}-installer / && \
+    rm /tmp/s6-overlay-${OVERLAY_ARCH}-installer
+
+COPY uidgidwrap /usr/local/bin/uidgidwrap

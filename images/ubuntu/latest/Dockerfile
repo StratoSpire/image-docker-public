@@ -3,5 +3,5 @@ FROM docker.io/lsiobase/ubuntu:${UBUNTU_RELEASE_NAME}
 
 COPY uidgidwrap /usr/local/bin/uidgidwrap
 
-ENTRYPOINT [ "uidgidwrap" ]
+ENTRYPOINT []
 CMD [ "/bin/bash" ]
