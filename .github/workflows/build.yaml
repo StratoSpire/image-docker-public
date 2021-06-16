@@ -8,20 +8,8 @@ on:
   schedule:
     - cron: '0 2 * * 0' # Weekly on Sundays at 02:00
 jobs:
-  extract_branch:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
-    outputs:
-      BRANCH: "${{ steps.extract_branch.outputs.branch }}"
   build_ubuntu:
     runs-on: ubuntu-latest
-    needs:
-      - extract_branch
     steps:
     - uses: actions/checkout@master
     - name: Build and push
@@ -34,11 +22,10 @@ jobs:
         buildargs: UBUNTU_RELEASE_NAME=focal
         tags: "focal,20.04,latest"
         cache: ${{ github.event_name != 'schedule' }}
-        no_push: ${{ needs.extract_branch.outputs.BRANCH != 'main' }}
+        no_push: ${{ github.ref != 'refs/heads/main' }}
   build_buildpack_deps_curl:
     runs-on: ubuntu-latest
     needs:
-      - extract_branch
       - build_ubuntu
     steps:
     - uses: actions/checkout@master
@@ -52,11 +39,10 @@ jobs:
         buildargs: UBUNTU_RELEASE_NAME=focal
         tags: "curl-focal,curl-ubuntu,curl"
         cache: ${{ github.event_name != 'schedule' }}
-        no_push: ${{ needs.extract_branch.outputs.BRANCH != 'main' }}
+        no_push: ${{ github.ref != 'refs/heads/main' }}
   build_buildpack_deps_scm:
     runs-on: ubuntu-latest
     needs:
-      - extract_branch
       - build_buildpack_deps_curl
     steps:
     - uses: actions/checkout@master
@@ -70,11 +56,10 @@ jobs:
         buildargs: UBUNTU_RELEASE_NAME=focal
         tags: "scm-focal,scm-ubuntu,scm"
         cache: ${{ github.event_name != 'schedule' }}
-        no_push: ${{ needs.extract_branch.outputs.BRANCH != 'main' }}
+        no_push: ${{ github.ref != 'refs/heads/main' }}
   build_buildpack_deps:
     runs-on: ubuntu-latest
     needs:
-      - extract_branch
       - build_buildpack_deps_scm
     steps:
     - uses: actions/checkout@master
@@ -88,11 +73,10 @@ jobs:
         buildargs: UBUNTU_RELEASE_NAME=focal
         tags: "focal,ubuntu,latest"
         cache: ${{ github.event_name != 'schedule' }}
-        no_push: ${{ needs.extract_branch.outputs.BRANCH != 'main' }}
+        no_push: ${{ github.ref != 'refs/heads/main' }}
   build_python:
     runs-on: ubuntu-latest
     needs:
-      - extract_branch
       - build_buildpack_deps
     steps:
     - uses: actions/checkout@master
@@ -106,11 +90,10 @@ jobs:
         buildargs: UBUNTU_RELEASE_NAME=focal,PYTHON_VERSION=3.9.5,PYTHON_PIP_VERSION=21.1.2
         tags: "3.9.5-focal,3.9.5-ubuntu,3.9.5,focal,ubuntu,latest"
         cache: ${{ github.event_name != 'schedule' }}
-        no_push: ${{ needs.extract_branch.outputs.BRANCH != 'main' }}
+        no_push: ${{ github.ref != 'refs/heads/main' }}
   build_wal_g:
     runs-on: ubuntu-latest
     needs:
-      - extract_branch
       - build_ubuntu
     steps:
     - uses: actions/checkout@master
@@ -124,4 +107,4 @@ jobs:
         buildargs: UBUNTU_RELEASE_NAME=focal,UBUNTU_RELEASE_NUM=20.04,WAL_G_VERSION=1.0,WAL_G_DATABASE=pg
         tags: "pg-1.0-focal,pg-1.0,1.0,pg,latest"
         cache: ${{ github.event_name != 'schedule' }}
-        no_push: ${{ needs.extract_branch.outputs.BRANCH != 'main' }}
+        no_push: ${{ github.ref != 'refs/heads/main' }}
