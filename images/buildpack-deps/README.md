@@ -1,0 +1,5 @@
+# StratoSpire buildpack-deps
+
+From StratoSpire's [public docker images](https://github.com/StratoSpire/image-docker-public).
+
+View the Dockerfile [here](https://github.com/StratoSpire/image-docker-public/blob/main/images/buildpack-deps/latest/Dockerfile).
