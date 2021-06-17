@@ -384,9 +384,10 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         name: stratospire/ci
         context: images/ci/latest
-        tags: "focal_terraform-1.0.0_helm-3.6.1_kubectl-1.21.1_python-3.9.5_elixir-1.12.1_node_14.17.1,focal_terraform-1.0_helm-3.6_kubectl-1.21_python-3.9_elixir-1.12_node_14.17,focal,latest"
+        tags: "focal,ubuntu,latest"
         cache: ${{ github.event_name != 'schedule' }}
         no_push: ${{ github.ref != 'refs/heads/main' }}
+        snapshot: true
   update_hub_ci:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
