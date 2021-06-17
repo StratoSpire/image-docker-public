@@ -4,6 +4,7 @@ FROM docker.io/stratospire/ubuntu:${UBUNTU_RELEASE_NAME}
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \
 		curl \
+		jq \
 		netbase \
 		wget \
 		unzip \
