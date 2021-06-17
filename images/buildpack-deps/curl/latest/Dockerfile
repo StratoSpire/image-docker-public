@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		curl \
 		netbase \
 		wget \
+		unzip \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; \
