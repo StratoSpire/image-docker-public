@@ -139,6 +139,70 @@ jobs:
         repository: stratospire/node
         readme-filepath: ./images/node/README.md
         short-description: "StratoSpire node image"
+  build_erlang:
+    runs-on: ubuntu-latest
+    needs:
+      - build_buildpack_deps
+    steps:
+    - uses: actions/checkout@master
+    - name: Build and push
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        name: stratospire/erlang
+        context: images/erlang/latest
+        buildargs: UBUNTU_RELEASE_NAME=focal,OTP_VERSION=24.0.2,REBAR3_VERSION=3.16.1,REBAR_VERSION=2.6.4
+        tags: "24.0.2-focal,24.0.2-ubuntu,24.0.2,24.0-focal,24.0-ubuntu,24.0,focal,ubuntu,latest"
+        cache: ${{ github.event_name != 'schedule' }}
+        no_push: ${{ github.ref != 'refs/heads/main' }}
+  update_hub_erlang:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    needs:
+      - build_erlang
+    steps:
+    - uses: actions/checkout@master
+    - name: Update Docker Hub description
+      uses: peter-evans/dockerhub-description@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: stratospire/erlang
+        readme-filepath: ./images/erlang/README.md
+        short-description: "StratoSpire erlang image"
+  build_elixir:
+    runs-on: ubuntu-latest
+    needs:
+      - build_erlang
+    steps:
+    - uses: actions/checkout@master
+    - name: Build and push
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        name: stratospire/elixir
+        context: images/elixir/latest
+        buildargs: UBUNTU_RELEASE_NAME=focal,OTP_VERSION=24.0.2,ELIXIR_VERSION=v1.12.1
+        tags: "1.12.1-focal,1.12.1-ubuntu,1.12.1,1.12-focal,1.12-ubuntu,1.12,focal,ubuntu,latest"
+        cache: ${{ github.event_name != 'schedule' }}
+        no_push: ${{ github.ref != 'refs/heads/main' }}
+  update_hub_elixir:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    needs:
+      - build_elixir
+    steps:
+    - uses: actions/checkout@master
+    - name: Update Docker Hub description
+      uses: peter-evans/dockerhub-description@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: stratospire/elixir
+        readme-filepath: ./images/elixir/README.md
+        short-description: "StratoSpire elixir image"
   build_python:
     runs-on: ubuntu-latest
     needs:
@@ -303,6 +367,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build_node
+      - build_elixir
       - build_ubuntu
       - build_python
       - build_kubectl
@@ -319,7 +384,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         name: stratospire/ci
         context: images/ci/latest
-        tags: "focal_terraform-1.0.0_helm-3.6.1_kubectl-1.21.1_python-3.9.5_node_14.17.1,focal_terraform-1.0_helm-3.6_kubectl-1.21_python-3.9_node_14.17,focal,latest"
+        tags: "focal_terraform-1.0.0_helm-3.6.1_kubectl-1.21.1_python-3.9.5_elixir-1.12.1_node_14.17.1,focal_terraform-1.0_helm-3.6_kubectl-1.21_python-3.9_elixir-1.12_node_14.17,focal,latest"
         cache: ${{ github.event_name != 'schedule' }}
         no_push: ${{ github.ref != 'refs/heads/main' }}
   update_hub_ci:

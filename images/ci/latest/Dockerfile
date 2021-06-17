@@ -2,6 +2,7 @@
 
 FROM docker.io/stratospire/ubuntu:focal
 INCLUDE docker.io/stratospire/node:14.17.1-focal
+INCLUDE docker.io/stratospire/elixir:1.12.1-focal
 INCLUDE docker.io/stratospire/python:3.9.5-focal
 INCLUDE docker.io/stratospire/kubectl:1.21.1-focal
 INCLUDE docker.io/stratospire/helm:3.6.1-focal
