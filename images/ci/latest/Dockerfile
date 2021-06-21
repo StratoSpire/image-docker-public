@@ -11,6 +11,15 @@ INCLUDE docker.io/stratospire/terraform:1.0.0-focal
 
 ENV LD_LIBRARY_PATH="/usr/local/lib"
 
+RUN node --version && \
+    go version && \
+    iex --version && \
+    python --version && \
+    which kubectl && \
+        /bin/bash -c "kubectl version || true" && \
+    helm version && \
+    terraform version
+
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
