@@ -5,7 +5,7 @@ ARG AWS_CLI_VERSION="2.0.30"
 ENV AWS_CLI_VERSION=${AWS_CLI_VERSION}
 
 RUN export ARCH="$( uname -m )" && \
-    curl -L https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip -o awscliv2.zip && \
+    curl -L https://awscli.amazonaws.com/awscli-exe-linux-${ARCH}-${AWS_CLI_VERSION}.zip -o awscliv2.zip && \
     unzip awscliv2.zip && \
     rm awscliv2.zip && \
     ./aws/install && \
